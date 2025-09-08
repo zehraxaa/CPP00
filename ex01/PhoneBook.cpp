@@ -1,7 +1,11 @@
 #include "PhoneBook.hpp"
+#include <cstdlib>
+#include <ostream>
 #include <string>
+#include <iomanip>
+#include <stdlib.h>
 
-void	headLine();
+std::string	shorten(std::string str);
 
 PhoneBook::PhoneBook() {
 	contactNum = 0;
@@ -71,24 +75,51 @@ void	PhoneBook::search()
 {
 	int	index;
 	std::string input;
+	int	head = 0;
+	int	i = 0;
 
-	headLine();
+	if (head == 0)
+	{
+		headLine();
+		head = 1;
+	}
 
+	while (i < contactNum)
+	{
+		std::cout<<"|"<<std::setw(10)<<i+1<<"|";
+		std::cout<<std::setw(10)<<shorten(contacts[i].getFirstName())<<"|";
+		std::cout<<std::setw(10)<<shorten(contacts[i].getLastName())<<"|";
+		std::cout<<std::setw(10)<<shorten(contacts[i].getNickname())<<"|"<<std::endl;
+		std::cout<<" -------------------------------------------"<<std::endl;
+		i++;
+	}
+
+	while ()
 	std::cout<<"Select a row to display: ";
 	std::cin>>index;
+	if (std::cin.eof())
+		return ;
+	if (contacts[index].getFirstName()=="")
+		std::cout<<"Index does not exist!!! Try again"<<std::endl;
 
 	//informations
-	std::cout<<"Name: "<<contacts[index].getFirstName()<<std::endl;
-	std::cout<<"Last Name: "<<contacts[index].getLastName()<<std::endl;
-	std::cout<<"Nickname: "<<contacts[index].getNickname()<<std::endl;
-	std::cout<<"Phone Number: "<<contacts[index].getPhoneNum()<<std::endl;
-	std::cout<<"Darkest Secret: "<<contacts[index].getSecret()<<std::endl;
+	std::cout<<"Name: "<<contacts[index-1].getFirstName()<<std::endl;
+	std::cout<<"Last Name: "<<contacts[index-1].getLastName()<<std::endl;
+	std::cout<<"Nickname: "<<contacts[index-1].getNickname()<<std::endl;
+	std::cout<<"Phone Number: "<<contacts[index-1].getPhoneNum()<<std::endl;
+	std::cout<<"Darkest Secret: "<<contacts[index-1].getSecret()<<std::endl;
 }
 
 void	headLine()
 {
 	std::cout<<" ___________________________________________"<<std::endl;
-	std::cout<<"|     Index|First Name| Last Name| Phone Num|"<<std::endl;
-	std::cout<<"| ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯|"<<std::endl;
+	std::cout<<"|     Index|First Name| Last Name|  Nickname|"<<std::endl;
+	std::cout<<"|----------+----------+----------+----------|"<<std::endl;
 
+}
+
+std::string	shorten(std::string str){
+	if (str.length() > 10)
+		return str.substr(0, 9) + ".";
+	return str;
 }
