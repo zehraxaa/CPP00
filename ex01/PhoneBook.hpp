@@ -3,12 +3,16 @@
 
 #include "Contact.hpp"
 #include <iostream>
+#include <stdlib.h>
 
 class PhoneBook
 {
 	private:
 		Contact contacts[8];
-		int	contactNum;
+		int		contactNum;
+		void	headLine();
+		int		number_control(std::string input);
+		bool hasNonAscii(std::string str);
 
 	public:
 		PhoneBook();
@@ -19,6 +23,6 @@ class PhoneBook
 		void	display();
 		void	exit();
 };
-	void	headLine();
+
 
 #endif

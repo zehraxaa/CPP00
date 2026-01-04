@@ -1,9 +1,9 @@
 #include "PhoneBook.hpp"
+#include <cctype>
 #include <cstdlib>
 #include <ostream>
 #include <string>
 #include <iomanip>
-#include <stdlib.h>
 
 std::string	shorten(std::string str);
 
@@ -14,18 +14,44 @@ PhoneBook::PhoneBook() {
 }
 
 PhoneBook::~PhoneBook() {
-	std::cout<<"Hung up the phone ☎️ 📵"<<std::endl;
+	std::cout<<"The phone hung up ☎️ 📵"<<std::endl;
+}
+
+int	PhoneBook::number_control(std::string input)
+{
+	size_t i = 0;
+
+	while (i < input.length())
+	{
+		if (!isdigit(input[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+bool PhoneBook::hasNonAscii(std::string str) {
+    for (size_t i = 0; i < str.length(); i++) {
+        if (static_cast<unsigned char>(str[i]) > 127)
+            return true;
+    }
+    return false;
 }
 
 void	PhoneBook::addUser()
 {
 	Contact newc;
 	std::string	input;
+
 //name
 	while (!std::cin.eof() && input == "")
 	{
 		std::cout<<"Enter name: ";
 		std::getline(std::cin, input);
+		if (hasNonAscii(input)) {
+			std::cout << "Please use English characters only!" << std::endl;
+			input = ""; // Inputu sıfırla ki döngü başa dönsün
+		}
 		if (!std::cin.eof() && input != "")
 			newc.setFirstName(input);
 	}
@@ -35,6 +61,10 @@ void	PhoneBook::addUser()
 	{
 		std::cout<<"Enter last name: ";
 		std::getline(std::cin, input);
+		if (hasNonAscii(input)) {
+			std::cout << "Please use English characters only!" << std::endl;
+			input = ""; // Inputu sıfırla ki döngü başa dönsün
+		}
 		if (!std::cin.eof() && input != "")
 			newc.setLastName(input);
 	}
@@ -44,6 +74,10 @@ void	PhoneBook::addUser()
 	{
 		std::cout<<"Enter nickname: ";
 		std::getline(std::cin, input);
+		if (hasNonAscii(input)) {
+			std::cout << "Please use English characters only!" << std::endl;
+			input = ""; // Inputu sıfırla ki döngü başa dönsün
+		}
 		if (!std::cin.eof() && input != "")
 			newc.setNickname(input);
 	}
@@ -53,8 +87,13 @@ void	PhoneBook::addUser()
 	{
 		std::cout<<"Enter phone number: ";
 		std::getline(std::cin, input);
-		if (!std::cin.eof() && input != "")
+		if (!std::cin.eof() && input != "" && number_control(input))
 			newc.setPhoneNum(input);
+		else if (!number_control(input))
+		{
+			std::cout<<"Please enter digits (0-9)"<<std::endl;
+			input = "";
+		}
 	}
 	input = "";
 //darkest secret
@@ -62,6 +101,10 @@ void	PhoneBook::addUser()
 	{
 		std::cout<<"Enter darkest secret: ";
 		std::getline(std::cin, input);
+		if (hasNonAscii(input)) {
+			std::cout << "Please use English characters only!" << std::endl;
+			input = ""; // Inputu sıfırla ki döngü başa dönsün
+		}
 		if (!std::cin.eof() && input != "")
 			newc.setSecret(input);
 	}
@@ -78,29 +121,50 @@ void	PhoneBook::search()
 	int	head = 0;
 	int	i = 0;
 
+	if (contactNum == 0)
+	{
+		std::cout<<"No contact has been found."<<std::endl;
+		return;
+	}
+
 	if (head == 0)
 	{
 		headLine();
 		head = 1;
 	}
 
-	while (i < contactNum)
+	while (i < contactNum && i < 8)
 	{
 		std::cout<<"|"<<std::setw(10)<<i+1<<"|";
 		std::cout<<std::setw(10)<<shorten(contacts[i].getFirstName())<<"|";
 		std::cout<<std::setw(10)<<shorten(contacts[i].getLastName())<<"|";
 		std::cout<<std::setw(10)<<shorten(contacts[i].getNickname())<<"|"<<std::endl;
-		std::cout<<" -------------------------------------------"<<std::endl;
+		std::cout<<" --------------------------------------------"<<std::endl;
 		i++;
 	}
 
-	while ()
 	std::cout<<"Select a row to display: ";
-	std::cin>>index;
-	if (std::cin.eof())
-		return ;
-	if (contacts[index].getFirstName()=="")
-		std::cout<<"Index does not exist!!! Try again"<<std::endl;
+	while (true)
+	{
+		if (!(std::cin >> index))
+		{
+			if (std::cin.eof())
+				return ;
+			std::cin.clear();
+			std::cin.ignore(1000, '\n');
+			std::cout<<"Error! Enter an integer number: ";
+			continue;
+		}
+		if (std::cin.eof())
+			return;
+		if (index < 1 || index > contactNum)
+		{
+			std::cout<<"Error! Enter a valid number: ";
+			continue;
+		}
+		break;
+	}
+	
 
 	//informations
 	std::cout<<"Name: "<<contacts[index-1].getFirstName()<<std::endl;
@@ -110,7 +174,7 @@ void	PhoneBook::search()
 	std::cout<<"Darkest Secret: "<<contacts[index-1].getSecret()<<std::endl;
 }
 
-void	headLine()
+void	PhoneBook::headLine()
 {
 	std::cout<<" ___________________________________________"<<std::endl;
 	std::cout<<"|     Index|First Name| Last Name|  Nickname|"<<std::endl;
@@ -118,8 +182,17 @@ void	headLine()
 
 }
 
-std::string	shorten(std::string str){
+std::string	shorten(std::string str)
+{
 	if (str.length() > 10)
-		return str.substr(0, 9) + ".";
+	{
+		std::string new_str;
+		for (int i = 0; i < 9; i++)
+		{
+			new_str += str[i];
+		}
+		new_str += ".";
+		return new_str;
+	}
 	return str;
 }
