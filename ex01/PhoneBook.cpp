@@ -6,7 +6,7 @@
 /*   By: aaydogdu <aaydogdu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 22:56:52 by aaydogdu          #+#    #+#             */
-/*   Updated: 2026/01/04 23:02:22 by aaydogdu         ###   ########.fr       */
+/*   Updated: 2026/01/07 23:28:52 by aaydogdu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ void	PhoneBook::addUser()
 	{
 		std::cout<<"Enter phone number: ";
 		std::getline(std::cin, input);
-		if (!std::cin.eof() && input != "" && number_control(input))
+		if (!std::cin.eof() && input != "" && numberControl(input))
 			newc.setPhoneNum(input);
-		else if (!number_control(input))
+		else if (!numberControl(input))
 		{
 			std::cout<<"Please enter digits (0-9)"<<std::endl;
 			input = "";
@@ -154,7 +154,7 @@ void	PhoneBook::search()
 	std::cout<<"Darkest Secret: "<<contacts[index-1].getSecret()<<std::endl;
 }
 
-int	PhoneBook::number_control(std::string input)
+int	PhoneBook::numberControl(std::string input)
 {
 	size_t i = 0;
 
