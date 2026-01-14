@@ -6,7 +6,7 @@
 /*   By: aaydogdu <aaydogdu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 23:06:39 by aaydogdu          #+#    #+#             */
-/*   Updated: 2026/01/04 23:06:40 by aaydogdu         ###   ########.fr       */
+/*   Updated: 2026/01/09 00:09:00 by aaydogdu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@ int main(int argc, char **argv)
 	int	i = 1;
 	int	j;
 
-	(void)argc;
+	if (argc == 1)
+	{
+		std::cout<<"* LOUD AND UNBEARABLE FEEDBACK NOISE *"<<std::endl;
+		return (0);
+	}
 	while (argv[i])
 	{
 		j = 0;
