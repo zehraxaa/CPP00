@@ -2,7 +2,6 @@
 
 ![Language](https://img.shields.io/badge/Language-C++98-blue)
 ![School](https://img.shields.io/badge/School-42-black)
-![License](https://img.shields.io/badge/License-MIT-green)
 
 ## 🗣️ Overview
 
